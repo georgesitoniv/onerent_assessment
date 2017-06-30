@@ -19,10 +19,6 @@ class PropertyDetail extends Component{
      };
   }
 
-  onExpandChange = (expanded) => {
-    this.setState({expanded: expanded});
-  };
-
   getCardMedia(property){
     if(property.defaultImage){
       if(property.defaultImage.medium){
@@ -46,6 +42,10 @@ class PropertyDetail extends Component{
       return;
     }
   }
+
+  onExpandChange = (expanded) => {
+    this.setState({expanded: expanded});
+  };
 
   renderLightbox(){
     const {property} = this.props;

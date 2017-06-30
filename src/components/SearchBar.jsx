@@ -16,18 +16,18 @@ class SearchBar extends Component{
     }
     this.props.fetchAllProperties();
   }
-
-  getMinRentValue(minRent){
-    if(minRent > 0){
-      return <span>${minRent}</span>
+  
+  getMaxRentValue(maxRent){
+    if(maxRent > this.state.minRent){
+      return <span>${maxRent}</span>
     } else {
       return <span>None</span>
     }
   }
 
-  getMaxRentValue(maxRent){
-    if(maxRent > this.state.minRent){
-      return <span>${maxRent}</span>
+  getMinRentValue(minRent){
+    if(minRent > 0){
+      return <span>${minRent}</span>
     } else {
       return <span>None</span>
     }

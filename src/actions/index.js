@@ -9,23 +9,6 @@ const fetchProperties =  () => {
   return axios.post('http://www.onerent.co/api/Property/availableProperties');
 }
 
-const filterPropertiesByRent = (properties, maxRent, minRent) => {
-  return _.filter(properties, (property) => {
-    const validations = { maxRent: true, minRent: true};
-    if(property.targetRent < minRent){
-      validations.minRent = false;
-    }
-    if(maxRent > minRent){
-      if(property.targetRent > maxRent){
-        validations.maxRent = false;
-      }
-    }
-    if(validations.maxRent && validations.minRent){
-      return property;
-    }
-  });
-}
-
 //filters properties by search labels entered
 //loops through the searchLabels for each property and validates if search label
 //is present. the validations are stored on hasLabels. if hasLabels contains
@@ -51,6 +34,23 @@ const filterPropertiesByLabel = (properties, searchLabels) => {
     }
   });
   return filteredProperties;
+}
+
+const filterPropertiesByRent = (properties, maxRent, minRent) => {
+  return _.filter(properties, (property) => {
+    const validations = { maxRent: true, minRent: true};
+    if(property.targetRent < minRent){
+      validations.minRent = false;
+    }
+    if(maxRent > minRent){
+      if(property.targetRent > maxRent){
+        validations.maxRent = false;
+      }
+    }
+    if(validations.maxRent && validations.minRent){
+      return property;
+    }
+  });
 }
 
 //sums all the confidence ratings of the search labels
