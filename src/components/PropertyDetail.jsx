@@ -33,10 +33,10 @@ class PropertyDetail extends Component{
               onTouchTap={this.handleOpen}
               />
             <div className="margin-vertical-5 text-center">
-            <FlatButton
-              label="Expand Image"
-              primary={true}
-              onClick={() => this.setState({ lightboxIsOpen: true})}/>
+              <FlatButton
+                label="Expand Image"
+                primary={true}
+                onClick={() => this.setState({ lightboxIsOpen: true})}/>
             </div>
           </CardMedia>
         )
