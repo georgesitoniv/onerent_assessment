@@ -79,7 +79,7 @@ class SearchBar extends Component{
               errorText={this.state.errorText}
             />
           <div className="row margin-vertical-10">
-              <div className="col col-xs-12 col-sm-6">
+              <div className="col col-12 col-sm-12 col-md-6">
                 Minimum Rent: {this.getMinRentValue(this.state.minRent)}
                 <Slider min={0} max={10000}
                   value={this.state.minRent}
@@ -90,7 +90,7 @@ class SearchBar extends Component{
                   className="slider-margin-5"
                   />
               </div>
-              <div className="col col-xs-12 col-sm-6">
+              <div className="col col-12 col-sm-12 col-md-6">
                 Maximum Rent: {this.getMaxRentValue(this.state.maxRent)}
                 <Slider
                   min={this.state.minRent}

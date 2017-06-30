@@ -62,7 +62,7 @@ class PropertyDetail extends Component{
   render(){
     const { property } = this.props;
     return(
-      <div className="col col-xs-12 col-sm-12 col-md-6 col-lg-6 margin-vertical-10">
+      <div className="col col-12 col-sm-12 col-md-6 margin-vertical-10">
         <Card expanded={this.state.expanded}
           onExpandChange={(expanded) => this.setState({expanded: expanded})}>
            <CardHeader
