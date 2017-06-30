@@ -16,7 +16,6 @@ class PropertyList extends Component {
   }
 
   render(){
-    //returns a loading progress bar if properties is null
     if(!this.props.properties){
       return (
         <div className="text-center margin-vertical-30">

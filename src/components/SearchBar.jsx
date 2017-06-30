@@ -2,13 +2,35 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchAllProperties, fetchPropertiesFiltered } from "../actions";
 import ChipInput from 'material-ui-chip-input'
-import { FlatButton, Paper, Dialog } from "material-ui";
+import { FlatButton, Paper, Dialog, Slider } from "material-ui";
 
 class SearchBar extends Component{
   constructor(props){
     super(props);
-    this.state = { searchLabels: [], errorText: "", isInfoOpen: false}
+    this.state = {
+      searchLabels: [],
+      errorText: "",
+      isInfoOpen: false,
+      maxRent: 0,
+      minRent: 0
+    }
     this.props.fetchAllProperties();
+  }
+
+  getMinRentValue(minRent){
+    if(minRent > 0){
+      return <span>${minRent}</span>
+    } else {
+      return <span>None</span>
+    }
+  }
+
+  getMaxRentValue(maxRent){
+    if(maxRent > this.state.minRent){
+      return <span>${maxRent}</span>
+    } else {
+      return <span>None</span>
+    }
   }
 
   onAddChip(searchLabel){
@@ -18,7 +40,7 @@ class SearchBar extends Component{
   }
 
   onClickClear(){
-    this.setState({ searchLabels: []})
+    this.setState({ searchLabels: [], maxRent: 0, minRent: 0})
   }
 
   onClickShowAll(){
@@ -34,9 +56,9 @@ class SearchBar extends Component{
 
   onSubmit(event){
     event.preventDefault();
-    const { searchLabels } = this.state;
-    if(searchLabels.length > 0){
-      this.props.fetchPropertiesFiltered(searchLabels);
+    const { searchLabels, maxRent, minRent } = this.state;
+    if(searchLabels.length > 0 || maxRent > 0 || minRent > 0){
+      this.props.fetchPropertiesFiltered(searchLabels, maxRent, minRent);
       this.setState({ errorText: ""})
     } else {
       this.setState({ errorText: "Please add your desired labels."});
@@ -56,6 +78,29 @@ class SearchBar extends Component{
               value={this.state.searchLabels}
               errorText={this.state.errorText}
             />
+          <div className="row margin-vertical-10">
+              <div className="col col-xs-12 col-sm-6">
+                Minimum Rent: {this.getMinRentValue(this.state.minRent)}
+                <Slider min={0} max={10000}
+                  value={this.state.minRent}
+                  onChange={
+                    (event, value)=>
+                    this.setState({ minRent: value, maxRent: value})
+                  }
+                  className="slider-margin-5"
+                  />
+              </div>
+              <div className="col col-xs-12 col-sm-6">
+                Maximum Rent: {this.getMaxRentValue(this.state.maxRent)}
+                <Slider
+                  min={this.state.minRent}
+                  max={12000}
+                  value={this.state.maxRent}
+                  onChange={(event, value)=>this.setState({ maxRent: value})}
+                  className="slider-margin-5"
+                  />
+              </div>
+            </div>
             <div className="text-right">
               <FlatButton
                 primary={true}
@@ -81,7 +126,6 @@ class SearchBar extends Component{
           </Paper>
         </form>
         <Dialog
-          title="Search Functions"
           modal={true}
           open={this.state.isInfoOpen}
         >

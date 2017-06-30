@@ -31,8 +31,9 @@ class PropertyDetail extends Component{
             <img
               src={property.defaultImage.medium} alt=""
               onTouchTap={this.handleOpen}
+              onClick={() => this.setState({ lightboxIsOpen: true})}
               />
-            <div className="margin-vertical-5 text-center">
+            <div className="padding-10 text-right">
               <FlatButton
                 label="Expand Image"
                 primary={true}
@@ -53,6 +54,7 @@ class PropertyDetail extends Component{
         images={[{ src: property.defaultImage.large }]}
         isOpen={this.state.lightboxIsOpen}
         onClose={() => this.setState({lightboxIsOpen: false})}
+        backdropClosesModal={true}
       />);
     }
   }
@@ -65,14 +67,11 @@ class PropertyDetail extends Component{
           onExpandChange={(expanded) => this.setState({expanded: expanded})}>
            <CardHeader
              title={`${property.address}, ${property.city}, ${property.state}`}
+             subtitle={`Target Rent: $${property.targetRent}`}
              actAsExpander={true}
              showExpandableButton={true}
            />
           {this.getCardMedia(property)}
-           <CardText>
-             <p>Target Rent: ${property.targetRent}</p>
-             <p>Target Deposit: ${property.targetDeposit}</p>
-           </CardText>
          </Card>
          {this.renderLightbox()}
       </div>

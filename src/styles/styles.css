@@ -1,6 +1,12 @@
 .no-margin{
   margin: 0 !important;
 }
+
+.slider-margin-5 > div{
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+}
+
 .margin-vertical-5{
   margin-top: 5px !important;
   margin-bottom: 5px !important;

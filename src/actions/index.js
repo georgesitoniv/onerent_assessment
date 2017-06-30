@@ -9,10 +9,27 @@ const fetchProperties =  () => {
   return axios.post('http://www.onerent.co/api/Property/availableProperties');
 }
 
+const filterPropertiesByRent = (properties, maxRent, minRent) => {
+  return _.filter(properties, (property) => {
+    const validations = { maxRent: true, minRent: true};
+    if(property.targetRent < minRent){
+      validations.minRent = false;
+    }
+    if(maxRent > minRent){
+      if(property.targetRent > maxRent){
+        validations.maxRent = false;
+      }
+    }
+    if(validations.maxRent && validations.minRent){
+      return property;
+    }
+  });
+}
+
 //filters properties by search labels entered
 //loops through the searchLabels for each property and validates if search label
 //is present. the validations are stored on hasLabels. if hasLabels contains
-//'false', the current property is discarded
+//'false', the current property is discarded.
 const filterPropertiesByLabel = (properties, searchLabels) => {
   const filteredProperties = _.filter(properties, (property) => {
     if(property.hasOwnProperty('defaultImage')){
@@ -36,7 +53,8 @@ const filterPropertiesByLabel = (properties, searchLabels) => {
   return filteredProperties;
 }
 
-//sums all the confidence ratings of the search labels selected
+//sums all the confidence ratings of the search labels
+//selected for each property.
 const getPropertiesWithRatings = (properties, searchLabels) => {
   return _.map(properties, (property) => {
     let total_rating= 0;
@@ -51,8 +69,9 @@ const getPropertiesWithRatings = (properties, searchLabels) => {
   });
 }
 
-//gets the all filtered properties with their corresponding total confindence
-//rating and sorts the properties by their total confidence rating
+//gets the all filtered properties by label and
+// their corresponding total confindence rating.
+//The total confidence rating is used to sort the properties.
 const sortPropertiesByLabel = (properties, searchLabels) => {
   const filteredProperties = filterPropertiesByLabel(properties, searchLabels);
   const propertiesWithRatings = getPropertiesWithRatings(
@@ -80,14 +99,21 @@ export function fetchAllProperties(){
 }
 
 //dispatches null to the reducer while the api is being fetch.
-export function fetchPropertiesFiltered(searchLabels){
+export function fetchPropertiesFiltered(searchLabels, maxRent, minRent){
   const properties = fetchProperties();
   return (dispatch) => {
     dispatch({ type: FETCH_PROPERTIES, payload: null});
     properties.then(({data}) => {
+      //filters the properties by rent
+      const filteredPropertiesByRent = filterPropertiesByRent(
+        data, maxRent, minRent
+      );
       dispatch({
         type: FETCH_PROPERTIES,
-        payload: _.mapKeys(sortPropertiesByLabel(data, searchLabels), "id")
+        payload: _.mapKeys(
+          sortPropertiesByLabel(filteredPropertiesByRent, searchLabels),
+           "id"
+         )
       })
     })
   }
