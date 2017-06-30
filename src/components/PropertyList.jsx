@@ -39,7 +39,7 @@ class PropertyList extends Component {
       <div>
         <div className="text-right">
           <h6>
-            Results: {propertiesLength} Properties
+            Number of Properties: {propertiesLength}
           </h6>
         </div>
         <div className="row">
